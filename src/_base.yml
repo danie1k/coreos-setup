@@ -1,0 +1,37 @@
+# https://coreos.github.io/butane/config-fcos-v1_4/
+
+variant: fcos
+version: 1.4.0
+
+# ignition:
+#   config:
+#   timeouts:
+#   security:
+#   proxy:
+
+# https://docs.fedoraproject.org/en-US/fedora-coreos/storage/
+# storage:
+#   disks:
+#   raid:
+#   filesystems:
+#   files:
+#   directories:
+#   links:
+#   luks:
+#   trees:
+
+# systemd:
+#   units:
+
+# passwd:
+#   users:
+#   groups:
+
+# kernel_arguments:
+#   should_exist:
+#   should_not_exist:
+
+# boot_device:
+#   layout:
+#   luks:
+#   mirror:
