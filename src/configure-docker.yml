@@ -11,7 +11,6 @@ systemd:
       enabled: true
       contents: |-2
         [Unit]
-        Description=Configure Docker
         After=setup-docker-user.service
         Requires=docker.service network.target network-online.target
 
@@ -30,8 +29,8 @@ storage:
   files:
     - path: /usr/local/sbin/configure-docker.sh
       mode: !!str 0544
-      user: {name: root}
-      group: {name: root}
+      user: {name: docker}
+      group: {name: users}
       contents:
         inline: |2
           {% filter indent(10) -%}

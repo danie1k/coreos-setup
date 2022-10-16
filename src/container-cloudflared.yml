@@ -13,13 +13,22 @@ storage:
       contents:
         inline: {{cloudflared.token}}
 
+    - path: /usr/local/sbin/start-cloudflared.sh
+      mode: !!str 0544
+      user: {name: docker}
+      group: {name: users}
+      contents:
+        inline: |2
+          {% filter indent(10) -%}
+          {% include "files/start-cloudflared.sh" %}
+          {%- endfilter %}
+
 systemd:
   units:
     - name: cloudflared.service
       enabled: true
       contents: |-2
         [Unit]
-        Description=Portainer Docker Container
         After=configure-docker.service
         Requires=docker.service network.target network-online.target
 
@@ -31,9 +40,7 @@ systemd:
         TimeoutStartSec=0
         ExecStartPre=-/usr/bin/docker stop cloudflared
         ExecStartPre=-/usr/bin/docker rm cloudflared
-        ExecStartPre=/usr/bin/docker pull danie1k/cloudflared:latest
-        ExecStart=/usr/bin/docker run -d -u 1001:100 --network {{docker.internal_network_name}} --name cloudflared --restart always -v "{{data_dir}}/cloudflared/token":/argo/token:Z danie1k/cloudflared:latest
-        ExecStart=/usr/bin/docker network connect {{docker.external_network_name}} cloudflared
+        ExecStart=/usr/local/sbin/start-cloudflared.sh
         ExecStop=/usr/bin/docker stop -t 15 cloudflared
 
         [Install]

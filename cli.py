@@ -1,3 +1,5 @@
+#!/bin/env python
+
 import json
 import re
 from operator import attrgetter

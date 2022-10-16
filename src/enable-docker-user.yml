@@ -1,13 +1,19 @@
 storage:
+  directories:
+    - path: {{data_dir}}
+      user: {name: docker}
+      group: {name: users}
+      mode: !!str 0755
+      overwrite: false
+
   files:
     - path: /usr/local/bin/setup-docker-user.sh
       mode: !!str 0755
       contents:
         inline: |2
           #!/bin/bash
-          set -ex
+          set -e
           setfacl --modify user:docker:rw /var/run/docker.sock
-          chown -R docker:users "{{data_dir}}"
 
 systemd:
   units:
@@ -17,13 +23,11 @@ systemd:
         [Unit]
         Before=systemd-user-sessions.service
         After=docker.service
-        ConditionPathExists=!/var/lib/setup-docker-user
 
         [Service]
         Type=oneshot
-        ExecStart=/usr/local/bin/setup-docker-user.sh
-        ExecStartPost=/usr/bin/touch /var/lib/setup-docker-user
         RemainAfterExit=yes
+        ExecStart=/usr/local/bin/setup-docker-user.sh
 
         [Install]
         WantedBy=multi-user.target
@@ -31,7 +35,7 @@ systemd:
 passwd:
   users:
     - name: docker  # The `docker` user & group already exists in CoreOS
-      password_hash: {{docker.user_password}}
+      password_hash: {{docker.user.password}}
       no_user_group: true
       ssh_authorized_keys: {{docker.ssh_authorized_keys|as_list}}
       home_dir: {{data_dir}}

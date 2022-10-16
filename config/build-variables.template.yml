@@ -3,14 +3,19 @@ hostname:
 data_dir: /var/data
 
 core:
-  # docker run -it --rm quay.io/coreos/mkpasswd --method=yescrypt
-  user_password:
+  user:
+    # docker run -it --rm quay.io/coreos/mkpasswd --method=yescrypt
+    password:
   ssh_authorized_keys: []
 
 docker:
   internal_network_name: internal
   external_network_name: external
-  user_password:
+  user:
+    # docker run -it --rm quay.io/coreos/mkpasswd --method=yescrypt
+    password:
+    uid: 1001  # docker
+    gid: 100  # users
   ssh_authorized_keys: []
 
 # https://developers.cloudflare.com/cloudflare-one/connections/connect-apps/
