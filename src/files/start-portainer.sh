@@ -7,6 +7,7 @@
 /usr/bin/docker run \
   --cpus 0.25 \
   --detach \
+  --log-driver loki \
   --memory 128m \
   --name portainer \
   --network '{{docker.internal_network_name}}' \

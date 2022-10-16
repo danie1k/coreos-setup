@@ -11,6 +11,9 @@ core:
 docker:
   internal_network_name: internal
   external_network_name: external
+  loki:
+    url: https://<username>:<password>@<hostname>/loki/api/v1/push
+    batch_size: 128
   user:
     # docker run -it --rm quay.io/coreos/mkpasswd --method=yescrypt
     password:
