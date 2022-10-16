@@ -1,0 +1,19 @@
+storage:
+  disks:
+    - device: /dev/sda
+      wipe_table: false
+      partitions:
+        - label: root
+          number: 4
+          size_mib: 10240  # 10 GB
+          resize: true
+        - label: data
+          size_mib: 0  # All remaining space
+          number: 5
+
+  filesystems:
+    - path: {{data_dir}}
+      device: /dev/disk/by-partlabel/data
+      format: ext4
+      wipe_filesystem: true
+      with_mount_unit: true

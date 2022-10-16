@@ -4,6 +4,7 @@
 extends: default
 rules:
   line-length:
+    level: warning
     max: 120
   indentation:
     spaces: 2

@@ -1,0 +1,39 @@
+systemd:
+  units:
+
+    # Change default `podman` to `docker`, due to Portainer
+    - name: docker.service
+      enabled: true
+    - name: podman.service
+      mask: true
+
+    - name: configure-docker.service
+      enabled: true
+      contents: |-2
+        [Unit]
+        Description=Configure Docker
+        After=setup-docker-user.service
+        Requires=docker.service network.target network-online.target
+
+        [Service]
+        Type=oneshot
+        User=docker
+        Group=users
+        RemainAfterExit=yes
+        TimeoutStartSec=0
+        ExecStart=/usr/local/sbin/configure-docker.sh
+
+        [Install]
+        WantedBy=multi-user.target
+
+storage:
+  files:
+    - path: /usr/local/sbin/configure-docker.sh
+      mode: !!str 0544
+      user: {name: root}
+      group: {name: root}
+      contents:
+        inline: |2
+          {% filter indent(10) -%}
+          {% include "files/configure-docker.sh" %}
+          {%- endfilter %}

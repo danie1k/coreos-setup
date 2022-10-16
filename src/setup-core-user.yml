@@ -1,0 +1,7 @@
+passwd:
+  users:
+    - name: core
+      password_hash: {{core.user_password}}
+      groups:
+        - systemd-journal
+      ssh_authorized_keys: {{core.ssh_authorized_keys|as_list}}

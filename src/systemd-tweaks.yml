@@ -1,0 +1,9 @@
+storage:
+  files:
+    # https://docs.fedoraproject.org/en-US/fedora-coreos/tutorial-autologin/
+    - path: /etc/profile.d/systemd-pager.sh
+      mode: !!str 0644
+      contents:
+        inline: |2
+          # Tell systemd to not use a pager when printing information
+          export SYSTEMD_PAGER=cat

@@ -1,0 +1,35 @@
+# https://www.portainer.io/blog/from-zero-to-production-with-fedora-coreos-portainer-and-wordpress-in-7-easy-steps
+
+storage:
+  directories:
+    - path: "{{data_dir}}/portainer"
+      user: {name: docker}
+      group: {name: users}
+      mode: !!str 0755
+      overwrite: false
+
+systemd:
+  units:
+    - name: portainer.service
+      enabled: true
+      contents: |-2
+        [Unit]
+        Description=Portainer Docker Container
+        After=configure-docker.service
+        Requires=docker.service network.target network-online.target
+
+        [Service]
+        Type=oneshot
+        User=docker
+        Group=users
+        RemainAfterExit=yes
+        TimeoutStartSec=0
+        ExecStartPre=-/usr/bin/docker stop portainer
+        ExecStartPre=-/usr/bin/docker rm portainer
+        ExecStartPre=/usr/bin/docker pull portainer/portainer-ee:alpine
+        # Privileged mode is required for binding to local socket to work due to SELINUX (https://github.com/portainer/portainer/issues/849)
+        ExecStart=/usr/bin/docker run --privileged=true -d -u 1001:100 --network {{docker.internal_network_name}} --name portainer --restart always -v /var/run/docker.sock:/var/run/docker.sock -v "{{data_dir}}/portainer":/data portainer/portainer-ee:alpine
+        ExecStop=/usr/bin/docker stop -t 15 portainer
+
+        [Install]
+        WantedBy=multi-user.target

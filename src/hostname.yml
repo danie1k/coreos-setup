@@ -1,0 +1,8 @@
+# https://docs.fedoraproject.org/en-US/fedora-coreos/hostname/
+
+storage:
+  files:
+    - path: /etc/hostname
+      mode: !!str 0644
+      contents:
+        inline: {{hostname}}

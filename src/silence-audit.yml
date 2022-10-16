@@ -1,0 +1,11 @@
+# https://www.portainer.io/blog/from-zero-to-production-with-fedora-coreos-portainer-and-wordpress-in-7-easy-steps
+
+storage:
+  files:
+    - path: /etc/sysctl.d/20-silence-audit.conf
+      mode: !!str 0644
+      contents:
+        inline: |2
+          # Raise console message logging level from DEBUG (7) to WARNING (4)
+          # to hide audit messages from the interactive console
+          kernel.printk=4
