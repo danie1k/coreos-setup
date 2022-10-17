@@ -1,0 +1,26 @@
+# https://www.portainer.io/blog/from-zero-to-production-with-fedora-coreos-portainer-and-wordpress-in-7-easy-steps
+
+storage:
+  files:
+    - path: /etc/sysconfig/iptables-rules
+      mode: 0755
+      contents:
+        inline: |2
+          {% filter indent(10) -%}
+          {% include "files/iptables-rules.sh" %}
+          {%- endfilter %}
+
+systemd:
+  units:
+    - name: iptables-rules.service
+      enabled: true
+      contents: |2
+        [Unit]
+        After=docker.service
+
+        [Service]
+        Type=oneshot
+        ExecStart=/etc/sysconfig/iptables-rules
+
+        [Install]
+        WantedBy=basic.target
