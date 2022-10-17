@@ -5,3 +5,5 @@ passwd:
       groups:
         - systemd-journal
       ssh_authorized_keys: {{core.ssh_authorized_keys|as_list}}
+    - name: root
+      password_hash: {{core.root_password}}

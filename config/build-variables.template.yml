@@ -8,6 +8,7 @@ core:
     # docker run -it --rm quay.io/coreos/mkpasswd --method=yescrypt
     password:
   ssh_authorized_keys: []
+  root_password:
 
 docker:
   internal_network_name: internal
