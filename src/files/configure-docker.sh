@@ -31,28 +31,14 @@ cat << EOF > /etc/docker/daemon.json
 EOF
 
 
-# The "Internal" network
+# Custom network
 # ----------------------------------------------------------------------------
-if ! /usr/bin/docker network inspect "{{docker.internal_network_name}}" >/dev/null 2>&1; then
-  /usr/bin/logger "Creating '{{docker.internal_network_name}}' Docker network"
+if ! /usr/bin/docker network inspect "{{docker.network_name}}" >/dev/null 2>&1; then
+  /usr/bin/logger "Creating '{{docker.network_name}}' Docker network"
 
   /usr/bin/docker network create \
     --driver bridge \
-    --internal \
-    "{{docker.internal_network_name}}"
+    "{{docker.network_name}}"
 else
-  /usr/bin/logger "Docker network '{{docker.internal_network_name}}' already exists"
-fi
-
-
-# The "External" network
-# ----------------------------------------------------------------------------
-if ! /usr/bin/docker network inspect "{{docker.external_network_name}}" >/dev/null 2>&1; then
-  /usr/bin/logger "Creating '{{docker.external_network_name}}' Docker network"
-
-  /usr/bin/docker network create \
-    --driver bridge \
-    "{{docker.external_network_name}}"
-else
-  /usr/bin/logger "Docker network '{{docker.external_network_name}}' already exists"
+  /usr/bin/logger "Docker network '{{docker.network_name}}' already exists"
 fi

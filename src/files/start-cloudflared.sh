@@ -10,9 +10,7 @@
   --log-driver loki \
   --memory 128m \
   --name cloudflared \
-  --network '{{docker.internal_network_name}}' \
+  --network '{{docker.network_name}}' \
   --restart always \
   --volume '{{data_dir}}/cloudflared/token':/argo/token:Z \
   danie1k/cloudflared:latest
-
-/usr/bin/docker network connect '{{docker.external_network_name}}' cloudflared

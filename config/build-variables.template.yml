@@ -11,8 +11,7 @@ core:
   root_password:
 
 docker:
-  internal_network_name: internal
-  external_network_name: external
+  network_name: docker
   loki:
     url: https://<username>:<password>@<hostname>/loki/api/v1/push
     batch_size: 128

@@ -10,7 +10,7 @@
   --log-driver loki \
   --memory 128m \
   --name portainer \
-  --network '{{docker.internal_network_name}}' \
+  --network '{{docker.network_name}}' \
   --privileged \
   --restart always \
   --user '{{docker.user.uid}}:{{docker.user.gid}}' \
