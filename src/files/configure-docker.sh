@@ -5,16 +5,16 @@ set -e
 # ----------------------------------------------------------------------------
 # https://grafana.com/docs/loki/latest/clients/docker-driver/
 if /usr/bin/docker plugin list | grep loki >/dev/null 2>&1; then
-  logger "Upgrading grafana/loki Docker driver"
+  /usr/bin/logger "Upgrading grafana/loki Docker driver"
   /usr/bin/docker plugin disable loki --force
   /usr/bin/docker plugin upgrade loki grafana/loki-docker-driver:latest --grant-all-permissions
   /usr/bin/docker plugin enable loki
 else
-  logger "Installing grafana/loki Docker driver"
+  /usr/bin/logger "Installing grafana/loki Docker driver"
   /usr/bin/docker plugin install grafana/loki-docker-driver:latest --alias loki --grant-all-permissions
 fi
 
-logger "Configuring Docker daemon"
+/usr/bin/logger "Configuring Docker daemon"
 # https://grafana.com/docs/loki/latest/clients/docker-driver/configuration/
 cat << EOF > /etc/docker/daemon.json
 {
@@ -34,25 +34,25 @@ EOF
 # The "Internal" network
 # ----------------------------------------------------------------------------
 if ! /usr/bin/docker network inspect "{{docker.internal_network_name}}" >/dev/null 2>&1; then
-  logger "Creating '{{docker.internal_network_name}}' Docker network"
+  /usr/bin/logger "Creating '{{docker.internal_network_name}}' Docker network"
 
   /usr/bin/docker network create \
     --driver bridge \
     --internal \
     "{{docker.internal_network_name}}"
 else
-  logger "Docker network '{{docker.internal_network_name}}' already exists"
+  /usr/bin/logger "Docker network '{{docker.internal_network_name}}' already exists"
 fi
 
 
 # The "External" network
 # ----------------------------------------------------------------------------
 if ! /usr/bin/docker network inspect "{{docker.external_network_name}}" >/dev/null 2>&1; then
-  logger "Creating '{{docker.external_network_name}}' Docker network"
+  /usr/bin/logger "Creating '{{docker.external_network_name}}' Docker network"
 
   /usr/bin/docker network create \
     --driver bridge \
     "{{docker.external_network_name}}"
 else
-  logger "Docker network '{{docker.external_network_name}}' already exists"
+  /usr/bin/logger "Docker network '{{docker.external_network_name}}' already exists"
 fi
