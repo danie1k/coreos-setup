@@ -3,6 +3,7 @@ data_dir: /var/data
 
 core:
   hostname: coreos
+  sshd_port: 22  # https://en.wikipedia.org/wiki/List_of_TCP_and_UDP_port_numbers
   user:
     # docker run -it --rm quay.io/coreos/mkpasswd --method=yescrypt
     password:

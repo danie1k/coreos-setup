@@ -1,0 +1,47 @@
+storage:
+  files:
+    - path: /usr/local/sbin/hardening.sh
+      mode: !!str 0544
+      user: {name: root}
+      group: {name: root}
+      contents:
+        inline: |2
+          {% filter indent(10) -%}
+          {% include "files/hardening.sh" %}
+          {%- endfilter %}
+
+systemd:
+  units:
+    - name: hardening.service
+      enabled: true
+      contents: |2
+        [Unit]
+        After=sshd.service
+        Before=systemd-user-sessions.service
+
+        [Service]
+        Type=oneshot
+        RemainAfterExit=yes
+        ExecStart=/usr/local/sbin/hardening.sh
+
+        [Install]
+        WantedBy=multi-user.target
+
+    # https://github.com/coreos/fedora-coreos-tracker/issues/396#issuecomment-751481634
+    - name: sshd-proxy.service
+      enabled: true
+      contents: |2
+        [Unit]
+        After=sshd.service
+        Requires=network.target network-online.target
+
+        [Service]
+        Type=notify
+        KillMode=mixed
+        TimeoutStartSec=0
+        Restart=always
+        RestartSec=5s
+        ExecStart=/usr/bin/socat TCP4-LISTEN:{{core.sshd_port}},reuseaddr,fork TCP4:127.0.0.1:22
+
+        [Install]
+        WantedBy=multi-user.target
