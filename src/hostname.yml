@@ -5,4 +5,4 @@ storage:
     - path: /etc/hostname
       mode: !!str 0644
       contents:
-        inline: {{hostname}}
+        inline: {{core.hostname}}

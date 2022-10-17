@@ -1,8 +1,8 @@
 ---
-hostname:
 data_dir: /var/data
 
 core:
+  hostname: coreos
   user:
     # docker run -it --rm quay.io/coreos/mkpasswd --method=yescrypt
     password:

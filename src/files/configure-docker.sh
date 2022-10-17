@@ -25,7 +25,7 @@ cat << EOF > /etc/docker/daemon.json
     "loki-batch-size": "{{docker.loki.batch_size}}",
     "no-file": "true",
     "max-size": "1m",
-    "loki-external-labels": "job=docker,container={% raw %}{{.Name}}{% endraw %},hostname={{hostname}}"
+    "loki-external-labels": "job=docker,container={% raw %}{{.Name}}{% endraw %},hostname={{core.hostname}}"
   }
 }
 EOF
